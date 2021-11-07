@@ -33,7 +33,6 @@ export default function App() {
 
     React.useEffect(() => {
         if(params && params !== appState.params){
-            //history.push(`${history.location.pathname}?${stringify(params)}`)
             setAppState({ pending: true })
 
             fetch(`/api/images?${stringify(params)}`, {

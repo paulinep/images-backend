@@ -5,7 +5,7 @@ import Passport from 'koa-passport'
 import Route from 'koa-route'
 
 
-import { GetImage, GetImages } from './routes/api-images'
+import { DeleteImage, GetImage, GetImages } from './routes/api-images'
 
 
 const { SESSION_SECRET } = process.env
@@ -24,6 +24,7 @@ export default class App extends Koa {
 
         this.use(Route.get('/api/images', GetImages()))
         this.use(Route.get('/api/images/:id', GetImage()))
+        this.use(Route.delete('/api/images/:id', DeleteImage()))
 
     }
 }

@@ -35,3 +35,14 @@ export  function GetImage() {
         ctx.body= await collection.findOne({ id: Number(id) })
     }
 }
+
+export  function DeleteImage() {
+    return async (ctx, id) => {
+        const client = await mongoClient.connect();
+        const db = client.db("images");
+        const collection = db.collection("images");
+        await collection.deleteOne({ id: Number(id) })
+        ctx.body= null
+        ctx.status = 204
+    }
+}
