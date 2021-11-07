@@ -1,0 +1,18 @@
+{
+  "name": "images",
+  "private": true,
+  "workspaces": ["packages/*"],
+  "scripts": {
+
+    "build:backend": "yarn workspace @images/backend build",
+    "start:backend": "yarn workspace @images/backend start",
+    "start-dev:backend": "yarn workspace @images/backend start-dev",
+
+    "start:frontend": "yarn workspace @images/frontend start",
+    "build:frontend": "yarn workspace @images/frontend build"
+
+  },
+  "dependencies": {
+    "typescript": "^3.9.6"
+  }
+}
