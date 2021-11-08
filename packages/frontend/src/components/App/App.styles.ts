@@ -9,7 +9,8 @@ export default () => createStyles({
         gridRowGap: '25px',
     },
     image: {
-        maxWidth: '100%'
+        maxWidth: '100%',
+        cursor: 'pointer'
     },
     main: {
         flexGrow: 1,

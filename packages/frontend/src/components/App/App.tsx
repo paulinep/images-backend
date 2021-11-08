@@ -85,6 +85,7 @@ export default function App() {
                         <img  onClick={()=>handleClick(item.id)} src={item.thumbnailUrl}/>
                     </div>
                 })}
+
             </div>
             <Pagination count={params.itemsCount || 10}
                         rowsPerPage={params.perPage || 10}

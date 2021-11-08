@@ -4,7 +4,7 @@ import { useHistory, useParams } from 'react-router-dom'
 //import clsx from 'clsx'
 
 
-import { Dialog, DialogActions, DialogTitle, IconButton } from '@material-ui/core'
+import { Dialog, DialogActions, DialogContent, DialogTitle, IconButton } from '@material-ui/core'
 import { IAppImage } from '../App/App.context'
 import { Close } from '@material-ui/icons'
 import Button from '@material-ui/core/Button'
@@ -42,14 +42,9 @@ export default function AppImage() {
             }
         })
             .then((res) => {
-                return res.json()
+                history.push('/')
             })
-            .then(() => {
-                setImage(null)
 
-
-            })
-        history.push('/')
     }
 
     if (!image){
@@ -58,11 +53,14 @@ export default function AppImage() {
 
 
     return (
-            <Dialog open={!!image}>
+            <Dialog open={!!image} maxWidth={'xl'}>
                 <DialogTitle>
                     <IconButton onClick={()=>history.push('/')}><Close/></IconButton>
                 </DialogTitle>
-                <img src={image && image.url || ''}/>
+                <DialogContent style={{overflow: 'hidden'}}>
+                    <img src={image && image.url || ''}/>
+                </DialogContent>
+
                 <DialogActions>
                     <Button onClick={()=> handleDelete(image.id)}>
                         Delete
