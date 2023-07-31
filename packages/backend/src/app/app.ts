@@ -3,12 +3,14 @@ import KoaBodyparser from 'koa-bodyparser'
 import KoaSession from 'koa-session'
 import Passport from 'koa-passport'
 import Route from 'koa-route'
+import { SESSION_SECRET } from '../index'
 
 
-import { DeleteImage, GetImage, GetImages } from './routes/api-images'
+import { callPython, DeleteImage, GetImage, GetImages } from './routes/api-images'
+import { Login } from './routes/api-users'
 
 
-const { SESSION_SECRET } = process.env
+
 
 export default class App extends Koa {
     constructor() {
@@ -25,6 +27,8 @@ export default class App extends Koa {
         this.use(Route.get('/api/images', GetImages()))
         this.use(Route.get('/api/images/:id', GetImage()))
         this.use(Route.delete('/api/images/:id', DeleteImage()))
+        this.use(Route.get('/api/login', Login()))
+        this.use(Route.get('/api/name', callPython()))
 
     }
 }

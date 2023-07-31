@@ -1,13 +1,8 @@
-const MongoClient = require("mongodb").MongoClient;
-
-const url = "mongodb://localhost:27017/";
-const mongoClient = new MongoClient(url);
+import { getCollection } from '../../index'
 
 export  function GetImages() {
     return async (ctx) => {
-        const client = await mongoClient.connect();
-        const db = client.db("images");
-        const collection = db.collection("images");
+        const collection = await getCollection('images')
         const result = await collection.find({}).
             limit(ctx.query && Number(ctx.query.perPage) || 10).
             skip(ctx.query && Number(ctx.query.page * ctx.query.perPage)  || 0).
@@ -27,22 +22,44 @@ export  function GetImages() {
 }
 export  function GetImage() {
     return async (ctx, id) => {
-        const client = await mongoClient.connect();
-        console.log(id)
-        const db = client.db("images");
-        const collection = db.collection("images");
-        console.log(await collection.findOne({ id: id }))
+        const collection = await getCollection('images')
         ctx.body= await collection.findOne({ id: Number(id) })
     }
 }
 
 export  function DeleteImage() {
     return async (ctx, id) => {
-        const client = await mongoClient.connect();
-        const db = client.db("images");
-        const collection = db.collection("images");
+        const collection = await getCollection('images')
         await collection.deleteOne({ id: Number(id) })
         ctx.body= null
         ctx.status = 204
     }
+}
+
+export function callPython () {
+    return async (ctx, res) => {
+        let spawn = require('child-process-promise').spawn;
+        let process = spawn('python',['../hello.py', ctx.query.videoname]);
+        let childProcess = process.childProcess;
+        let result
+        childProcess.stdout.on('data', function (data) {
+            console.log('[spawn] stdout: ', data.toString());
+            result = data.toString()
+        });
+        childProcess.stderr.on('data', function (data) {
+            console.log('[spawn] stderr: ', data.toString());
+            result = data.toString()
+        });
+        process.then(function () {
+            console.log('[spawn] done!');
+            ctx.body= result
+        })
+            .catch(function (err) {
+                console.error('[spawn] ERROR: ', err);
+            });
+
+        ctx.status = 200
+
+    }
+
 }
