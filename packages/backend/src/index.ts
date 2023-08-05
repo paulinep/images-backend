@@ -4,6 +4,7 @@ const PORT = 3001
 
 const app = new App()
 export const { SESSION_SECRET } = process.env
+export const { TOKEN_KEY } = process.env
 const MongoClient = require("mongodb").MongoClient;
 
 const url = "mongodb://localhost:27017/";
