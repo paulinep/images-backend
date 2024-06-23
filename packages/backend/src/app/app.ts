@@ -29,7 +29,7 @@ export default class App extends Koa {
         this.use(Route.get('/api/images/:id', GetImage()))
         this.use(Route.delete('/api/images/:id', DeleteImage()))
         this.use(Route.post('/api/v1/users/sign', Login()))
-        this.use(Route.post('/api/v1/users/self', getCurrentUser()))
+        this.use(Route.get('/api/v1/users/self', getCurrentUser()))
         this.use(Route.get('/api/name', callPython()))
 
     }

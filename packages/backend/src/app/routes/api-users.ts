@@ -1,6 +1,7 @@
 import { getCollection } from '../../index'
-const jwt = require("jsonwebtoken");
+import jwt from 'jsonwebtoken'
 import { TOKEN_KEY } from '../../index'
+import { ObjectId } from 'mongodb';
 
 
 export function Login() {
@@ -25,7 +26,7 @@ export function Login() {
         ctx.body = {
             result : {
                 token: token,
-                user: result
+                user: { profile: result }
             }
         }
     }
@@ -35,8 +36,8 @@ export function getCurrentUser() {
     return async (ctx) => {
         const collection = await getCollection('users');
         try {
-            let decoded = jwt.verify(ctx.request.headers['Access-Token'], TOKEN_KEY);
-            const result = await collection.findOne({ user_id: decoded.user_id })
+            let decoded = jwt.verify(ctx.request.header['x-token'], TOKEN_KEY);
+            const result = await collection.findOne({ _id: new ObjectId(decoded.user_id) })
             if (!result) {
                 ctx.status = 403
                 ctx.body ="Такого пользователя нет в базе"
@@ -44,8 +45,10 @@ export function getCurrentUser() {
             }
             ctx.set('Content-type', 'application/json');
             ctx.status = 200
-            ctx.body = result;
+            ctx.body = { result: result };
         } catch (error) {
+            console.log(error)
+            ctx.set('Content-type', 'application/json');
             ctx.status = 403
             ctx.body ="Такого пользователя нет в базе"
             return
